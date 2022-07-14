@@ -83,6 +83,15 @@ LRESULT CALLBACK WindowProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lPara
 			MessageBox(hWnd, oss.str().c_str(), L"마우스 왼쪽 클릭!", MB_OK);
 			break;
 		}
+
+		case WM_KEYDOWN:
+		{
+			std::wostringstream oss;
+
+			oss << "Virtual Key = " << wParam << ", Extra = " << std::hex << lParam << std::endl;
+			OutputDebugString(oss.str().c_str());
+			break;
+		}
 		default:
 			return DefWindowProc(hWnd, message, wParam, lParam);
 	}
