@@ -1,4 +1,5 @@
 #include<Windows.h>
+#include<sstream>
 
 const wchar_t gClassName[] = L"MyWindowClass";
 
@@ -73,6 +74,15 @@ LRESULT CALLBACK WindowProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lPara
 		case WM_DESTROY:
 			PostQuitMessage(0);
 			break;
+
+		case WM_LBUTTONDOWN:
+		{
+			std::wostringstream oss;
+			oss << "X : " << LOWORD(lParam) << ", Y : " << HIWORD(lParam);
+
+			MessageBox(hWnd, oss.str().c_str(), L"마우스 왼쪽 클릭!", MB_OK);
+			break;
+		}
 		default:
 			return DefWindowProc(hWnd, message, wParam, lParam);
 	}
