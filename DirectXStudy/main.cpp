@@ -1,3 +1,6 @@
+#define WIN32_LEAN_AND_MEAN 
+//Windows.h에 있는 API중 자주사용하지 않는 것들을 없애 Complie속도를 증가시킨다.
+//LEAN(군살없는)MEAN(평균적으로 사용하지 않는)
 #include<Windows.h>
 #include<sstream>
 
