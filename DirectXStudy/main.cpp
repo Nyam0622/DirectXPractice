@@ -4,7 +4,13 @@
 #include<Windows.h>
 #include<sstream>
 
-const wchar_t gClassName[] = L"MyWindowClass";
+const wchar_t gClassName[]{ L"MyWindowClass" };
+const wchar_t gTitle[]{ L"Direct3D" };
+const int WINDOW_WIDTH{ 800 };
+const int WINDOW_HEIGHT{ 600 };
+
+HWND gHwnd{ };
+HINSTANCE gInstance{ };
 
 LRESULT CALLBACK WindowProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam);
 
@@ -15,7 +21,6 @@ int WINAPI WinMain(
 	_In_ int nShowCmd)
 {
 	
-	HWND hWnd;
 	WNDCLASSEX wc;
 
 	ZeroMemory(&wc, sizeof(WNDCLASSEX));
@@ -34,29 +39,43 @@ int WINAPI WinMain(
 		return 0;
 	}
 
-	hWnd = CreateWindowEx(
+	RECT wr{ 0, 0, WINDOW_WIDTH, WINDOW_HEIGHT }; 
+	//클라이언트 영역의 크기를 만들어줄 사각형 크기의 RECT(좌상단, 우하단)
+	AdjustWindowRect( &wr, WS_OVERLAPPEDWINDOW, FALSE ); 
+	//윈도우 크기(rect), 윈도우 스타일(가장 흔한 WS_OVERAPPEDWINDOW), 메뉴(false)
+
+	gHwnd = CreateWindowEx(
 		NULL,
 		gClassName,
 		L"Hellow Window",
 		WS_OVERLAPPEDWINDOW,
 		CW_USEDEFAULT,
 		CW_USEDEFAULT,
-		640,
-		480,
+		wr.right - wr.left,
+		wr.bottom - wr.top,
 		NULL,
 		NULL,
 		hInstance,
 		NULL
 	);
 
-	if (hWnd == nullptr)
+	if (gHwnd == nullptr)
 	{
 		MessageBox(nullptr, L"Failed to Create Window Class!", L"Error", MB_ICONEXCLAMATION | MB_OK);
 		return 0;
 	}
 
-	ShowWindow(hWnd, nShowCmd);
-	UpdateWindow(hWnd);
+	ShowWindow(gHwnd, nShowCmd);
+
+	SetForegroundWindow(gHwnd);
+	/*
+	* 지정된 창을 전경으로 가져오고 창을 활성화 시킨다. 다른 스레드에 비해 높은 우선순위를 할당한다.
+	* 작업표시줄에 내려가 있을 때 클릭하면 올라오는 효과이다.
+	*/
+	SetFocus(gHwnd);
+	//지정된 창에 키보드 포커스를 설정한다.
+
+	UpdateWindow(gHwnd);
 
 	MSG msg;
 	while (GetMessage(&msg, NULL, 0, 0))
