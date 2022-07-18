@@ -3,6 +3,10 @@
 //LEAN(군살없는)MEAN(평균적으로 사용하지 않는)
 #include<Windows.h>
 #include<sstream>
+#include<wrl/client.h>
+#include<d3d11.h>
+
+#pragma comment(lib, "d3d11.lib")
 
 const wchar_t gClassName[]{ L"MyWindowClass" };
 const wchar_t gTitle[]{ L"Direct3D" };
